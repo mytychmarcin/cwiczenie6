@@ -15,25 +15,43 @@ Poniższe zadania będą się sprowadzały do modyfikacji bazowego kodu. Proces 
 import java.io.IOException;
 import java.util.Scanner;
 
-class WrongStudentName extends Exception { }
+class WrongStudentName extends Exception {
+}
+
+class WrongAge extends Exception {
+}
+
+class WrongDateOfBirth extends Exception {
+}
 
 class Main {
     public static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        while(true) {
+        while (true) {
             try {
                 int ex = menu();
-                switch(ex) {
-                    case 1: exercise1(); break;
-                    case 2: exercise2(); break;
-                    case 3: exercise3(); break;
-                    default: return;
+                switch (ex) {
+                    case 1:
+                        exercise1();
+                        break;
+                    case 2:
+                        exercise2();
+                        break;
+                    case 3:
+                        exercise3();
+                        break;
+                    default:
+                        return;
                 }
-            } catch(IOException e) {
-
-            } catch(WrongStudentName e) {
-                System.out.println("Błędne imię studenta!");
+            } catch (IOException e) {
+                System.out.println("blad wejscia/wyjscia");
+            } catch (WrongStudentName e) {
+                System.out.println("bledne imie studenta");
+            } catch (WrongAge e) {
+                System.out.println("wiek musi byc z przedzialu 1-99");
+            } catch (WrongDateOfBirth e) {
+                System.out.println("bledna data urodzenia");
             }
         }
     }
@@ -51,25 +69,30 @@ class Main {
         scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
-        if(name.contains(" "))
+        if (name.contains(" "))
             throw new WrongStudentName();
-
         return name;
     }
 
-    public static void exercise1() throws IOException, WrongStudentName {
+    public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
         var name = ReadName();
         System.out.println("Podaj wiek: ");
         var age = scan.nextInt();
+        if (age < 1 || age > 99)
+            throw new WrongAge();
         scan.nextLine();
-        System.out.println("Podaj datę urodzenia DD-MM-YYYY");
+
+        System.out.println("Podaj datę urodzenia DD-MM-YYYY:");
         var date = scan.nextLine();
+        if (!date.matches("\\d{2}-\\d{2}-\\d{4}"))
+            throw new WrongDateOfBirth();
+
         (new Service()).addStudent(new Student(name, age, date));
     }
 
     public static void exercise2() throws IOException {
         var students = (new Service()).getStudents();
-        for(Student current : students) {
+        for (Student current : students) {
             System.out.println(current.ToString());
         }
     }
@@ -79,10 +102,10 @@ class Main {
         System.out.println("Podaj imię: ");
         var name = scan.nextLine();
         var wanted = (new Service()).findStudentByName(name);
-        if(wanted == null)
+        if (wanted == null)
             System.out.println("Nie znaleziono...");
         else {
-            System.out.println("Znaleziono: ");
+            System.out.println("Znaleziono:");
             System.out.println(wanted.ToString());
         }
     }
