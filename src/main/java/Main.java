@@ -13,6 +13,7 @@ Poniższe zadania będą się sprowadzały do modyfikacji bazowego kodu. Proces 
 //Niepoprawny wiek – gdy jest mniejszy od 0 lub większy niż 100. Niepoprawna data urodzenia – gdy nie jest zapisana w formacie DD-MM-YYYY, np. 28-02-2023.
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class WrongStudentName extends Exception {
@@ -41,9 +42,14 @@ class Main {
                     case 3:
                         exercise3();
                         break;
-                    default:
+                    case 0:
                         return;
+                    default:
+                        System.out.println("nieprawidlowa opcja");
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("musi byc cyfra");
+                scan.nextLine();
             } catch (IOException e) {
                 System.out.println("blad wejscia/wyjscia");
             } catch (WrongStudentName e) {
@@ -51,13 +57,13 @@ class Main {
             } catch (WrongAge e) {
                 System.out.println("bledny wiek studenta 1-99");
             } catch (WrongDateOfBirth e) {
-                System.out.println("bledna data urodzenia");
+                System.out.println("bledna data urodzenia. poprawny format to DD-MM-YYYY");
             }
         }
     }
 
     public static int menu() {
-        System.out.println("Wciśnij:");
+        System.out.println("\nWciśnij:");
         System.out.println("1 - aby dodać studenta");
         System.out.println("2 - aby wypisać wszystkich studentów");
         System.out.println("3 - aby wyszukać studenta po imieniu");
@@ -67,7 +73,7 @@ class Main {
 
     public static String ReadName() throws WrongStudentName {
         scan.nextLine();
-        System.out.println("Podaj imię: ");
+        System.out.print("Podaj imię: ");
         String name = scan.nextLine();
         if (name.contains(" "))
             throw new WrongStudentName();
@@ -77,13 +83,13 @@ class Main {
     public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
         var name = ReadName();
 
-        System.out.println("Podaj wiek: ");
+        System.out.print("Podaj wiek: ");
         var age = scan.nextInt();
         if (age < 1 || age > 99)
             throw new WrongAge();
 
         scan.nextLine();
-        System.out.println("Podaj datę urodzenia (DD-MM-YYYY):");
+        System.out.print("Podaj datę urodzenia (DD-MM-YYYY): ");
         var date = scan.nextLine();
 
         if (!date.matches("\\d{2}-\\d{2}-\\d{4}"))
@@ -101,7 +107,7 @@ class Main {
 
     public static void exercise3() throws IOException {
         scan.nextLine();
-        System.out.println("Podaj imię: ");
+        System.out.print("Podaj imię: ");
         var name = scan.nextLine();
         var wanted = (new Service()).findStudentByName(name);
         if (wanted == null)
