@@ -49,7 +49,7 @@ class Main {
             } catch (WrongStudentName e) {
                 System.out.println("bledne imie studenta");
             } catch (WrongAge e) {
-                System.out.println("wiek musi byc z przedzialu 1-99");
+                System.out.println("bledny wiek studenta 1-99");
             } catch (WrongDateOfBirth e) {
                 System.out.println("bledna data urodzenia");
             }
@@ -76,14 +76,16 @@ class Main {
 
     public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
         var name = ReadName();
+
         System.out.println("Podaj wiek: ");
         var age = scan.nextInt();
         if (age < 1 || age > 99)
             throw new WrongAge();
-        scan.nextLine();
 
-        System.out.println("Podaj datę urodzenia DD-MM-YYYY:");
+        scan.nextLine();
+        System.out.println("Podaj datę urodzenia (DD-MM-YYYY):");
         var date = scan.nextLine();
+
         if (!date.matches("\\d{2}-\\d{2}-\\d{4}"))
             throw new WrongDateOfBirth();
 
