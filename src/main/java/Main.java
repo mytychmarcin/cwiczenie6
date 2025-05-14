@@ -45,35 +45,41 @@ class Main {
                     case 0:
                         return;
                     default:
-                        System.out.println("nieprawidlowa opcja");
+                        System.out.println("blad: wybor poza zakresem wybierz cyfre od 0 do 3.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("musi byc cyfra");
+                System.out.println("blad: wpisz cyfre");
                 scan.nextLine();
             } catch (IOException e) {
-                System.out.println("blad wejscia/wyjscia");
+                System.out.println("blad wejscia/wyjscia.");
             } catch (WrongStudentName e) {
                 System.out.println("bledne imie studenta");
             } catch (WrongAge e) {
                 System.out.println("bledny wiek studenta 1-99");
             } catch (WrongDateOfBirth e) {
-                System.out.println("bledna data urodzenia. poprawny format to DD-MM-YYYY");
+                System.out.println("bledna data urodzenia. poprawny format to dd-mm-yyyy.");
             }
         }
     }
 
     public static int menu() {
-        System.out.println("\nWciśnij:");
-        System.out.println("1 - aby dodać studenta");
-        System.out.println("2 - aby wypisać wszystkich studentów");
-        System.out.println("3 - aby wyszukać studenta po imieniu");
-        System.out.println("0 - aby wyjść z programu");
-        return scan.nextInt();
+        System.out.println("\nWcisnij:");
+        System.out.println("1 - aby dodac studenta");
+        System.out.println("2 - aby wypisac wszystkich studentow");
+        System.out.println("3 - aby wyszukac studenta po imieniu");
+        System.out.println("0 - aby wyjsc z programu");
+        int choice = scan.nextInt();
+
+        if (choice < 0 || choice > 3) {
+            System.out.println("blad. wybierz cyfre od 0 do 3");
+            return -1;
+        }
+        return choice;
     }
 
     public static String ReadName() throws WrongStudentName {
         scan.nextLine();
-        System.out.print("Podaj imię: ");
+        System.out.print("Podaj imie: ");
         String name = scan.nextLine();
         if (name.contains(" "))
             throw new WrongStudentName();
@@ -89,7 +95,7 @@ class Main {
             throw new WrongAge();
 
         scan.nextLine();
-        System.out.print("Podaj datę urodzenia (DD-MM-YYYY): ");
+        System.out.print("Podaj date urodzenia (dd-mm-yyyy): ");
         var date = scan.nextLine();
 
         if (!date.matches("\\d{2}-\\d{2}-\\d{4}"))
@@ -107,7 +113,7 @@ class Main {
 
     public static void exercise3() throws IOException {
         scan.nextLine();
-        System.out.print("Podaj imię: ");
+        System.out.print("Podaj imie: ");
         var name = scan.nextLine();
         var wanted = (new Service()).findStudentByName(name);
         if (wanted == null)
